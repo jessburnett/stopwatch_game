@@ -2,13 +2,17 @@ import simplegui
 
 # define global variables
 time = 0
+attempts = 0
+success = 0
+started = 0
+
 
 # define helper function format that converts integer
 # counting tenths of seconds into formatted string A:BC.D
-def format(total_milliseconds):
-    minutes = int(total_milliseconds/600)
-    seconds = int((total_milliseconds%600)/10)
-    milliseconds = total_milliseconds%10 
+def format(t):
+    minutes = int(t/600)
+    seconds = int((t%600)/10)
+    milliseconds = t%10 
     if seconds < 10:
         formatted = str(minutes) + ":0" + str(seconds) + "." + str(milliseconds)
     else:
@@ -18,14 +22,28 @@ def format(total_milliseconds):
     
 # define event handlers for buttons; "Start", "Stop", "Reset"
 def start():
+    global started
+    started=1
     timer.start()
     
 def stop():
+    global attempts
+    global success
+    global started
+    if started==1:
+        if time%10==0:
+            success=success+1
+        started=0
+        attempts=attempts+1
     timer.stop()
     
 def reset():
     global time
-    time = 0.00
+    global attempts
+    global success
+    time = 0
+    attempts=0
+    success=0
     timer.stop()
 
 
@@ -37,7 +55,7 @@ def tick():
         
 def draw(canvas):
     canvas.draw_text(format(time), [100,100], 36, "White")
-    
+    canvas.draw_text(str(success)+"/"+str(attempts), [275,50], 14, "Green")
     
 # create frame
 frame = simplegui.create_frame("StopWatch", 300,200)
