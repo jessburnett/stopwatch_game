@@ -33,6 +33,7 @@ def stop():
     if started==1:
         if time%10==0:
             success=success+1
+            sound.play()
         started=0
         attempts=attempts+1
     timer.stop()
@@ -59,7 +60,8 @@ def draw(canvas):
     
 # create frame
 frame = simplegui.create_frame("StopWatch", 300,200)
-
+# lagniappe - added sound
+sound = simplegui.load_sound("https://dl-web.dropbox.com/get/Public/ding.wav?w=AABBCdYCqAnKcyluYUs6ndE3MsEMdAWQVdvDfgaeICVdAA")
 # register event handlers
 timer = simplegui.create_timer(100, tick)
 
